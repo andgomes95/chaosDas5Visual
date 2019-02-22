@@ -8,17 +8,13 @@
 //Para utilizar os threads, compilar com -pthread
 #include <pthread.h>
 
-#include <math.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #define GL_GLEXT_PROTOTYPES 1
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <GL/glext.h>
 #include <unistd.h> 
 #include <vector> 
+#include "shapes.cpp"
 #define ESCAPE 27
 
 //LINHA DE COMPILAÇÃO g++ integracao.cpp -o pratica -lX11 -lXi -lglut -lGL -lGLU -lm -lasound -lpthread -fopenmp
@@ -31,20 +27,7 @@ int axis[6];
 
 /***Variaveis OpenGL***/
 using namespace std; 
-//estrutura color com valores de rgb em float
-typedef struct color{
-    float r;
-    float g;
-    float b;
-}clr;
-//objeto desenhado no canvas, com tipo de objeto, posição inicial, raio e cor
-typedef struct objectCanvas{
-    int type;
-    float x0;
-    float y0;
-    float raio;
-    clr color;
-}obC;
+
 //Vetor de objetos a serem renderizados
 vector<obC> objetos; 
 //instância da janela
@@ -375,70 +358,6 @@ static void idle(void) {
     
     glutPostRedisplay();
 }
-static void draw_circle(float x0, float y0,float raio,clr color){
-    glBegin(GL_POLYGON);
-    for (int i=0; i < 360; i++){
-        float degInRad = i*3.14159/180;
-        glColor3f(color.r,color.g,color.b);
-        glVertex2f(x0+cos(degInRad)*(raio),y0+sin(degInRad)*(raio));
-    }
-    glEnd();
-}
-static void draw_square(float x0,float y0, float raio, clr color){
-    glColor3f(color.r,color.g,color.b);
-    float vertexDistCenter = raio*sqrt(2.0)/2.0;
-    glBegin(GL_POLYGON);
-        glVertex2f(x0+vertexDistCenter,y0+vertexDistCenter);
-        glVertex2f(x0+vertexDistCenter,y0-vertexDistCenter);
-        glVertex2f(x0-vertexDistCenter,y0-vertexDistCenter);
-        glVertex2f(x0-vertexDistCenter,y0+vertexDistCenter);
-    glEnd();
-}
-static void draw_torus(float x0,float y0,float raio,clr color){
-    glColor3f(color.r,color.g,color.b);
-    glPushMatrix();
-    glTranslatef(x0,y0,0.0);
-    glutSolidTorus(raio/2.0, raio, 50, 50);
-    glPopMatrix();
-}
-static void draw_teapot(float x0,float y0,float raio,clr color){
-    glColor3f(color.r,color.g,color.b);
-    glPushMatrix();
-    glTranslatef(x0,y0,0.0);
-    glutSolidTeapot(raio);
-    glPopMatrix();
-}
-static void draw_sphere(float x0, float y0, float raio, clr color){
-    glColor3f(color.r,color.g,color.b);
-    glPushMatrix();
-    glTranslatef(x0,y0,0.0);
-    glutSolidSphere(raio,50,50);
-    glPopMatrix();   
-}
-static void draw_cube(float x0, float y0, float raio, clr color){
-    glColor3f(color.r,color.g,color.b);
-    glPushMatrix();
-    glTranslatef(x0,y0,0.0);
-    glutSolidCube(raio);
-    glPopMatrix();
-}
-static void draw_cone(float x0, float y0, float raio, clr color){
-    glColor3f(color.r,color.g,color.b);
-    glPushMatrix();
-    glTranslatef(x0,y0,0.0);
-    glutSolidCone(raio/2,raio,50,50);
-    glPopMatrix();
-}
-static void draw_triangle(float x0, float y0, float raio, clr color){
-     glColor3f(color.r,color.g,color.b);
-    float vertexDistCenter = raio*sqrt(2.0)/2.0;
-    glBegin(GL_POLYGON);
-        glVertex2f(x0,y0+vertexDistCenter);
-        glVertex2f(x0+vertexDistCenter,y0-vertexDistCenter);
-        glVertex2f(x0-vertexDistCenter,y0-vertexDistCenter);
-    glEnd();
-}
-
 static void limparTela(){
     objetos.clear();
 }

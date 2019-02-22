@@ -1,10 +1,10 @@
 all: main
 
-main: mainc chaosvisualc
-	g++ -o main main.o chaosvisual.o -lX11 -lXi -lglut -lGL -lGLU -lm 
+main: mainc shapesc
+	g++ -o main integracao.o shapes.o -lX11 -lXi -lglut -lGL -lGLU -lm -lasound -fopenmp -lpthread
 
-mainc: main.cpp
-	g++ -c main.cpp -lX11 -lXi -lglut -lGL -lGLU -lm 
+mainc: integracao.cpp
+	g++ -c integracao.cpp -lX11 -lXi -lglut -lGL -lGLU -lm  -lasound -fopenmp -lpthread
 
-chaosvisualc: chaosvisual.cpp
-	g++ -c chaosvisual.cpp -lX11 -lXi -lglut -lGL -lGLU -lm  
+shapesc: shapes.cpp
+	g++ -c shapes.cpp -lX11 -lXi -lglut -lGL -lGLU -lm  
