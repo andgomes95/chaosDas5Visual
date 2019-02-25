@@ -13,7 +13,7 @@
 #include <stdio.h>
 #define GL_GLEXT_PROTOTYPES 1
 #include <unistd.h> 
-#include <vector> 
+#include <list> 
 #include "shapes.cpp"
 #define ESCAPE 27
 
@@ -29,7 +29,7 @@ int axis[6];
 using namespace std; 
 
 //Vetor de objetos a serem renderizados
-vector<obC> objetos; 
+list<obC> objetos; 
 //instância da janela
 int window;
 //variaveis para screenshot
@@ -325,14 +325,16 @@ static void makeSomething(){
             break;
     }
 }
+bool big_image (const obC obj) { return (obj.raio>2.0); }
+
 static void display(void) {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
     glRotatef(angleX,1.0,0.0,0.0);
     glRotatef(angleY,0.0,1.0,0.0);
     glRotatef(angleZ,0.0,0.0,1.0);
-    
-    for (auto i = objetos.begin(); i!= objetos.end();++i){
+    objetos.remove_if (big_image);
+    for (auto i = objetos.begin(); i!= objetos.end();++i){        
         draw_scene((*i).type,(*i).x0,(*i).y0,(*i).raio,(*i).color);
         makeSomething();
         (*i).raio = (*i).raio + valueSomething;
